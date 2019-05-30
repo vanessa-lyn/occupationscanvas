@@ -65,7 +65,7 @@ function drawAll(error, ageCSV, idCSV, occupations) {
 	
 	var colorCircle = d3.scale.ordinal()
 			.domain([0,1,2,3])
-			.range(['#bfbfbf','#838383','#4c4c4c','#1c1c1c']);
+			.range(['#E8E6E3','#148FE2']);
 			
 	var colorBar = d3.scale.ordinal()
 		.domain(["16 to 19","20 to 24","25 to 34","35 to 44","45 to 54","55 to 64","65+"])
@@ -110,7 +110,8 @@ function drawAll(error, ageCSV, idCSV, occupations) {
 	////////////////////////////////////////////////////////////// 
 	
 	//Turn the value into an actual numeric value
-	ageCSV.forEach(function(d) { d.value = +d.value; });
+	ageCSV.forEach(function(d) { 
+		d.value = +d.value; });
  
 	//Create new dataset grouped by ID
 	data = d3.nest()
@@ -182,6 +183,19 @@ function drawAll(error, ageCSV, idCSV, occupations) {
 			chosenContext.arc(nodeX, nodeY, nodeR, 0,  2 * Math.PI, true);				
 			chosenContext.fill();
 		
+			//console.log(node.image);
+			// if(node.image) {
+			// 	if(node.ID.lastIndexOf(currentID, 0) === 0  & !hidden) {
+					// imageURL = occupations.image;
+			// 		console.log(node.image);
+			// 		//context = canvas.getContext('2d');
+					// base_image = new Image();
+					// base_image.src = imageURL;
+					// chosenContext.drawImage(base_image, 100, 100);
+
+			// 	}
+			// }
+
 			//Draw the bars inside the circles (only in the visible canvas)
 			//Only draw bars in leaf nodes
 			if(node.ID in dataById) {
@@ -202,6 +216,7 @@ function drawAll(error, ageCSV, idCSV, occupations) {
 						chosenContext.textAlign = "center";
 						chosenContext.textBaseline = "middle"; 
 						chosenContext.fillText("Total "+commaFormat(node.size)+" (in thousands)", nodeX, nodeY + -0.75 * nodeR);
+
 						
 						//Get the text back in pieces that will fit inside the node
 						var titleText = getLines(chosenContext, node.name, nodeR*2*0.7, fontSizeTitle, titleFont);
@@ -306,7 +321,7 @@ function drawAll(error, ageCSV, idCSV, occupations) {
 			if(typeof node.parent !== "undefined" & typeof node.children !== "undefined") {
 				if(node.name !== "occupation" & !hidden & showText & $.inArray(node.name, kids) >= 0) {
 					//Calculate the best font size for the non-leaf nodes
-					var fontSizeTitle = Math.round(nodeR / 10);
+					var fontSizeTitle = Math.round(nodeR / 5);
 					if (fontSizeTitle > 4) drawCircularText(chosenContext, node.name.replace(/,? and /g, ' & '), fontSizeTitle, titleFont, nodeX, nodeY, nodeR, rotationText[counter], 0);
 				}//if
 				counter = counter + 1;
@@ -562,7 +577,7 @@ function drawAll(error, ageCSV, idCSV, occupations) {
 		ctx.textBaseline = 'alphabetic';
 		ctx.textAlign = 'center'; // Ensure we draw in exact center
 		ctx.font = fontSize + "px " + titleFont;
-		ctx.fillStyle = "rgba(255,255,255," + textAlpha +")";
+		ctx.fillStyle = "rgba(0,0,0," + textAlpha +")";
 
 		startAngle = startAngle * (Math.PI / 180); // convert to radians
 		text = text.split("").reverse().join(""); // Reverse letters
